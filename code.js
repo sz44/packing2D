@@ -1,6 +1,3 @@
-function setup() {
-	createCanvas(400, 400);
-}
 
 class Rect {
 	constructor(x, y, width, height, color = "red") {
@@ -17,11 +14,6 @@ class Rect {
 }
 
 
-const boxes = [
-	[10, 30, 'red'],
-	[20, 20, 'green']
-];
-
 class TreeNode {
 	constructor(x, y, width, height, left = null, right = null) {
 		this.x = x;
@@ -30,28 +22,20 @@ class TreeNode {
 		this.height = height;
 		this.box = null;
 		this.left = left;
-		this.right = rigth;
+		this.right = right;
 	}
 }
 
-//const rootArea = new Rect(0,0,400,400);
-const rootNode = new Tree(0, 0, 400, 400);
-
-function fillBox() {
-	for (let box in boxes) {
-		// traverse tree (dfs for smallest first) trying to insert
-		insert(rootNode, box)
-	}
-}
+const rootNode = new TreeNode(0, 0, 400, 400);
 
 function insert(node, box) {
 	if (!node) {
 		return false;
 	}
-	if (node.width * node.height < box.width * box.height) {
+	if (node.width < box[0] || node.height < box[1]) {
 		return false;
 	}
-	if (root.filled) {
+	if (node.box) {
 		if (insert(node.left, box)) {
 			return true;
 		}
@@ -60,18 +44,59 @@ function insert(node, box) {
 		}
 		return false;
 	}
+
 	// insert and split
-
+	console.log(`inserting box: ${box}`);
 	node.box = box;
-	node.left = new TreeNode(box.width, node.y, node.width - box.width, box.height);
-	node.right = new TreeNode(node.x, box.height, box.width, node.height - box.height);
+	node.left = new TreeNode(node.x + box[0], node.y, node.width - box[0], box[1]);
+	node.right = new TreeNode(node.x, node.y + box[1], box[0], node.height - box[1]);
 
+	return true;
+}
 
+function drawTree(node) {
+	if (!node || !node.box) {
+		return
+	}
+	// draw node area
+	fill("#dddddd");
+	rect(node.x, node.y, node.width, node.height);
+	fill(node.box[2]);
+	rect(node.x, node.y, node.box[0], node.box[1]);
+	drawTree(node.left);
+	drawTree(node.right);
+}
+
+function test() {
+	fill('#a5f1b9');
+	rect(0,0,400,400);
+}
+
+const boxes = [
+	[50, 70, 'blue'],
+	[10, 30, 'red'],
+	[20, 20, 'green'],
+	[50, 10, 'blue'],
+	[10, 30, 'red'],
+	[50, 70, 'blue'],
+	[50, 70, 'blue'],
+];
+
+function setup() {
+	createCanvas(400, 400);
+	background(240);
+	// fill('#a5f1b9');
+	// noStroke();
+	// rect(100,100,100,100);
+	// test();
+	for (let box of boxes) {
+		insert(rootNode, box);
+	}
+	console.log(rootNode);
+	drawTree(rootNode);	
 }
 
 function draw() {
-	background(220);
-	for (let box of boxes) {
-		box.draw()
-	}
+	// background(220);
+	// drawTree(rootNode);	
 }
