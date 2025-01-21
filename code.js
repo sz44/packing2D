@@ -32,6 +32,7 @@ function insert(node, box) {
 	if (!node) {
 		return false;
 	}
+	// returning too early
 	if (node.width < box[0] || node.height < box[1]) {
 		return false;
 	}
@@ -49,18 +50,24 @@ function insert(node, box) {
 	console.log(`inserting box: ${box}`);
 	node.box = box;
 	node.left = new TreeNode(node.x + box[0], node.y, node.width - box[0], box[1]);
-	node.right = new TreeNode(node.x, node.y + box[1], box[0], node.height - box[1]);
+	node.right = new TreeNode(node.x, node.y + box[1], node.width, node.height - box[1]);
 
 	return true;
 }
 
 function drawTree(node) {
-	if (!node || !node.box) {
-		return
+	if (!node) {
+		return;
 	}
 	// draw node area
 	fill("#dddddd");
+	console.log(`drawing area: ${node.x} ${node.y} ${node.width} ${node.height}`);
 	rect(node.x, node.y, node.width, node.height);
+
+	if (!node.box) {
+		return;
+	}
+
 	fill(node.box[2]);
 	rect(node.x, node.y, node.box[0], node.box[1]);
 	drawTree(node.left);
@@ -73,13 +80,13 @@ function test() {
 }
 
 const boxes = [
-	[50, 70, 'blue'],
 	[10, 30, 'red'],
 	[20, 20, 'green'],
 	[50, 10, 'blue'],
 	[10, 30, 'red'],
 	[50, 70, 'blue'],
 	[50, 70, 'blue'],
+	[20, 20, 'green'],
 ];
 
 function setup() {
