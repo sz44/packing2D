@@ -13,7 +13,6 @@ class Rect {
 	}
 }
 
-
 class TreeNode {
 	constructor(x, y, width, height, left = null, right = null) {
 		this.x = x;
@@ -32,7 +31,6 @@ function insert(node, box) {
 	if (!node) {
 		return false;
 	}
-	// returning too early
 	if (node.width < box[0] || node.height < box[1]) {
 		return false;
 	}
@@ -60,9 +58,9 @@ function drawTree(node) {
 		return;
 	}
 	// draw node area
-	fill("#dddddd");
-	console.log(`drawing area: ${node.x} ${node.y} ${node.width} ${node.height}`);
-	rect(node.x, node.y, node.width, node.height);
+	// fill("#dddddd");
+	// console.log(`drawing area: ${node.x} ${node.y} ${node.width} ${node.height}`);
+	// rect(node.x, node.y, node.width, node.height);
 
 	if (!node.box) {
 		return;
@@ -87,30 +85,22 @@ const boxes = [
 	[50, 70, 'blue'],
 	[50, 70, 'blue'],
 	[20, 20, 'green'],
+	[350, 60, '#a5f1b9'],
 ];
 
-// let boxAreas = boxes.map( (box, i) => [box[0]*box[1], i]);
-// boxAreas.sort((a,b) => b[0] - a[0]);
 boxes.sort((a,b) => (b[0]  * b[1]) - (a[0] * a[1]));
 
 function setup() {
 	createCanvas(400, 400);
 	background(240);
-	// fill('#a5f1b9');
-	// noStroke();
-	// rect(100,100,100,100);
-	// test();
-	// for (let [area, ind] of boxAreas) {
-	// 	insert(rootNode, boxes[ind])
-	// }
+
 	for (let box of boxes) {
 		insert(rootNode, box);
 	}
+
 	console.log(rootNode);
 	drawTree(rootNode);	
 }
 
 function draw() {
-	// background(220);
-	// drawTree(rootNode);	
 }
