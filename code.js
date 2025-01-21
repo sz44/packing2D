@@ -15,9 +15,23 @@ function insert(node, box) {
 	if (!node) {
 		return false;
 	}
+
+	if (node.width < box.width || node.height < box.height) {
+		// check if rotating would fit
+		if (node.width < box.height || node.height < box.width ) {
+			return false;
+		}
+		console.log("rotating", box);
+		// rotate
+		let temp = box.width;
+		box.width = box.height;
+		box.height = temp;
+	}
+
 	if (node.width < box.width || node.height < box.height) {
 		return false;
 	}
+
 	if (node.box) {
 		if (insert(node.left, box)) {
 			return true;
@@ -65,6 +79,7 @@ const boxes = [
 	{width:50, height:70, color:'blue'},
 	{width:20, height:20, color:'green'},
 	{width:350, height:60, color:'#a591b9'},
+	{width:50, height:90, color:'orange'},
 ];
 
 boxes.sort((a,b) => (b.width  * b.height) - (a.width * a.height));
