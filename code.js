@@ -89,6 +89,10 @@ const boxes = [
 	[20, 20, 'green'],
 ];
 
+// let boxAreas = boxes.map( (box, i) => [box[0]*box[1], i]);
+// boxAreas.sort((a,b) => b[0] - a[0]);
+boxes.sort((a,b) => (b[0]  * b[1]) - (a[0] * a[1]));
+
 function setup() {
 	createCanvas(400, 400);
 	background(240);
@@ -96,6 +100,9 @@ function setup() {
 	// noStroke();
 	// rect(100,100,100,100);
 	// test();
+	// for (let [area, ind] of boxAreas) {
+	// 	insert(rootNode, boxes[ind])
+	// }
 	for (let box of boxes) {
 		insert(rootNode, box);
 	}
