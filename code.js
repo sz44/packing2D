@@ -1,18 +1,3 @@
-
-class Rect {
-	constructor(x, y, width, height, color = "red") {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.color = color;
-	}
-	draw() {
-		fill(this.color);
-		rect(0, 0, this.width, this.height);
-	}
-}
-
 class TreeNode {
 	constructor(x, y, width, height, left = null, right = null) {
 		this.x = x;
@@ -25,13 +10,12 @@ class TreeNode {
 	}
 }
 
-const rootNode = new TreeNode(0, 0, 400, 400);
 
 function insert(node, box) {
 	if (!node) {
 		return false;
 	}
-	if (node.width < box[0] || node.height < box[1]) {
+	if (node.width < box.width || node.height < box.height) {
 		return false;
 	}
 	if (node.box) {
@@ -47,8 +31,8 @@ function insert(node, box) {
 	// insert and split
 	console.log(`inserting box: ${box}`);
 	node.box = box;
-	node.left = new TreeNode(node.x + box[0], node.y, node.width - box[0], box[1]);
-	node.right = new TreeNode(node.x, node.y + box[1], node.width, node.height - box[1]);
+	node.left = new TreeNode(node.x + box.width, node.y, node.width - box.width, box.height);
+	node.right = new TreeNode(node.x, node.y + box.height, node.width, node.height - box.height);
 
 	return true;
 }
@@ -66,29 +50,26 @@ function drawTree(node) {
 		return;
 	}
 
-	fill(node.box[2]);
-	rect(node.x, node.y, node.box[0], node.box[1]);
+	fill(node.box.color);
+	rect(node.x, node.y, node.box.width, node.box.height);
 	drawTree(node.left);
 	drawTree(node.right);
 }
 
-function test() {
-	fill('#a5f1b9');
-	rect(0,0,400,400);
-}
-
 const boxes = [
-	[10, 30, 'red'],
-	[20, 20, 'green'],
-	[50, 10, 'blue'],
-	[10, 30, 'red'],
-	[50, 70, 'blue'],
-	[50, 70, 'blue'],
-	[20, 20, 'green'],
-	[350, 60, '#a5f1b9'],
+	{width:10, height:30, color:'red'},
+	{width:20, height:20, color:'green'},
+	{width:50, height:10, color:'blue'},
+	{width:10, height:30, color:'red'},
+	{width:50, height:70, color:'blue'},
+	{width:50, height:70, color:'blue'},
+	{width:20, height:20, color:'green'},
+	{width:350, height:60, color:'#a591b9'},
 ];
 
-boxes.sort((a,b) => (b[0]  * b[1]) - (a[0] * a[1]));
+boxes.sort((a,b) => (b.width  * b.height) - (a.width * a.height));
+
+const rootNode = new TreeNode(0, 0, 400, 400);
 
 function setup() {
 	createCanvas(400, 400);
