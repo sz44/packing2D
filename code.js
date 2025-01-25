@@ -10,43 +10,41 @@ class TreeNode {
 	}
 }
 
-
 function insert(node, box) {
 	if (!node) {
 		return false;
 	}
 
+	// dont go deeper if box no longer fits
 	if (node.width < box.width || node.height < box.height) {
+		// console.log("dosent fit: ", box, [node.width, node.height]);
 		// check if rotating would fit
-		if (node.width < box.height || node.height < box.width ) {
+		if (node.width >= box.height && node.height >= box.width) {
+			// console.log("rotating", box);
+			// rotate
+			let temp = box.width;
+			box.width = box.height;
+			box.height = temp;
+		} else {
 			return false;
 		}
-		console.log("rotating", box);
-		// rotate
-		let temp = box.width;
-		box.width = box.height;
-		box.height = temp;
-	}
-
-	if (node.width < box.width || node.height < box.height) {
-		return false;
 	}
 
 	if (node.box) {
-		if (insert(node.left, box)) {
-			return true;
-		}
-		if (insert(node.right, box)) {
-			return true;
-		}
-		return false;
+		return insert(node.right, box) || insert(node.left, box);
 	}
 
 	// insert and split
 	console.log(`inserting box: ${box}`);
 	node.box = box;
-	node.left = new TreeNode(node.x + box.width, node.y, node.width - box.width, box.height);
-	node.right = new TreeNode(node.x, node.y + box.height, node.width, node.height - box.height);
+	const remainingWidth = node.width - box.width;
+	const remainingHeight = node.height - box.height;
+	if (remainingWidth > 0) {
+		node.right = new TreeNode(node.x + box.width, node.y, remainingWidth, box.height);
+	}
+	if (remainingHeight > 0) {
+		node.left = new TreeNode(node.x, node.y + box.height, node.width, remainingHeight);
+	}
 
 	return true;
 }
