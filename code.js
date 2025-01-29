@@ -61,9 +61,16 @@ function drawTree(node) {
 	if (!node.box) {
 		return;
 	}
+	let padding = 4;
 
-	fill(node.box.color);
+	noStroke();
+	fill("#FFFFFF");
 	rect(node.x, node.y, node.box.width, node.box.height);
+
+	stroke("#000000");
+	fill(node.box.color);
+	rect(node.x+padding, node.y+padding, node.box.width-2*padding, node.box.height-2*padding);
+
 	drawTree(node.left);
 	drawTree(node.right);
 }
@@ -73,11 +80,25 @@ const boxes = [
 	{width:20, height:20, color:'green'},
 	{width:50, height:10, color:'blue'},
 	{width:10, height:30, color:'red'},
+	{width:10, height:30, color:'red'},
+	{width:20, height:20, color:'green'},
+	{width:50, height:10, color:'blue'},
+	{width:10, height:30, color:'red'},
 	{width:50, height:70, color:'blue'},
 	{width:50, height:70, color:'blue'},
 	{width:20, height:20, color:'green'},
 	{width:350, height:60, color:'#a591b9'},
 	{width:50, height:90, color:'orange'},
+	{width:300, height:190, color:'black'},
+	{width:150, height:140, color:'#b100FF'},
+	{width:50, height:40, color:'#b100FF'},
+	{width:60, height:80, color:'#b100FF'},
+	{width:70, height:170, color:'#b100FF'},
+	{width:120, height:130, color:'#b100FF'},
+	{width:180, height:210, color:'#aaaaaa'},
+	{width:180, height:210, color:'#aaaaaa'},
+	{width:310, height:180, color:'#aaaaaa'},
+
 ];
 
 boxes.sort((a,b) => (b.width  * b.height) - (a.width * a.height));
@@ -86,7 +107,7 @@ const rootNode = new TreeNode(0, 0, 400, 400);
 
 function setup() {
 	createCanvas(400, 400);
-	background(240);
+	background(255);
 
 	for (let box of boxes) {
 		insert(rootNode, box);
